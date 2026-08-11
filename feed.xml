@@ -6,7 +6,7 @@
     <atom:link href="https://9-8-7-6.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Vito Lin writes Rust close to the metal and CUDA close to the silicon, and sends the fixes upstream.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 11 Aug 2026 15:52:41 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 11 Aug 2026 15:57:53 GMT</lastBuildDate>
     <item>
       <title>Paper notes: how Llama 3 trains on 16K H100s</title>
       <link>https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/</link>
@@ -27,6 +27,13 @@
       <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/</guid>
       <pubDate>Sat, 25 Jul 2026 09:00:00 GMT</pubDate>
       <description>Notes on Mooncake's FAST '25 paper: disaggregated prefill/decode, a cluster-wide KVCache pool, and prefix hashing that skips prefill on a cache hit.</description>
+    </item>
+    <item>
+      <title>Resources that helped me transition into AI Infrastructure</title>
+      <link>https://9-8-7-6.github.io/writing/2026-07-ai-infra-resource/</link>
+      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-07-ai-infra-resource/</guid>
+      <pubDate>Sun, 19 Jul 2026 09:00:00 GMT</pubDate>
+      <description>Everything I read, watched, and cloned this year while moving into AI Infrastructure — GPU programming, LLM internals, and the systems around serving them.</description>
     </item>
   </channel>
 </rss>
