@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical}}">
+<meta property="og:type" content="{{ogtype}}">
+<meta property="og:title" content="{{ogtitle}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:site_name" content="{{sitename}}">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="{{sitename}}" href="{{root}}feed.xml">
+<link rel="icon" href="{{root}}assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{{root}}assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="{{root}}">{{name}}</a>
+    <nav aria-label="Sections">
+      <a href="{{root}}about/"{{navabout}}>About</a>
+      <a href="{{github}}" rel="me">GitHub</a>
+      <a href="{{linkedin}}" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+{{body}}
+  </main>
+
+  <footer class="footer">
+    <p>Follow via <a href="{{root}}feed.xml">RSS</a>, <a href="{{github}}" rel="me">GitHub</a>, or <a href="{{linkedin}}" rel="me">LinkedIn</a>.</p>
+    <p>&copy; {{year}} {{name}} &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>

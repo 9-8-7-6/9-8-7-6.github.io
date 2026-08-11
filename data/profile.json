@@ -1,0 +1,49 @@
+{
+  "name": "Vito Lin",
+  "handle": "9-8-7-6",
+  "role": "Systems and GPU programming",
+  "siteurl": "https://9-8-7-6.github.io",
+  "baseurl": "/",
+  "lang": "en",
+  "description": "Vito Lin writes Rust close to the metal and CUDA close to the silicon, and sends the fixes upstream.",
+  "hero": "Rust close to the metal. CUDA close to the silicon.",
+  "intro": [
+    "Most of what I know came from reading other people's compilers and GPU runtimes, then breaking them on purpose. When something is undocumented or broken in a project I depend on, I fix it there rather than working around it locally.",
+    "Based in Taipei, currently deep in Rust-to-PTX toolchains."
+  ],
+  "about": [
+    "I work at the layer where a program meets the machine: memory layout, kernel launches, toolchain plumbing. Rust on the host side, CUDA on the device side, and a great deal of time spent reading other people's build systems.",
+    "The pattern in my work is small and consistent. When a dependency is broken or its documentation is wrong, I patch it upstream. That is slower than a local workaround, and it is the only version that helps the next person who hits the same wall.",
+    "I write here about the problems that cost me a day and should have cost an hour. If something is wrong, tell me -- I would rather be corrected than quoted."
+  ],
+  "github": "https://github.com/9-8-7-6",
+  "linkedin": "https://www.linkedin.com/in/vitothedev",
+  "sourceurl": "https://github.com/9-8-7-6/9-8-7-6.github.io",
+  "links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/9-8-7-6",
+      "note": "code and patches"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/vitothedev",
+      "note": "shorter versions of what is here"
+    },
+    {
+      "label": "RSS",
+      "url": "/feed.xml",
+      "note": "subscribe without an algorithm"
+    }
+  ],
+  "hidden": [],
+  "tagline": "I'm Vito Lin, an AI infrastructure engineer in Taipei. I run LLM serving on real GPUs, read the papers behind the systems, and send the fixes upstream.",
+  "stack": [
+    "rust",
+    "cuda",
+    "k8s",
+    "vllm"
+  ],
+  "focus": "LLM serving infrastructure",
+  "location": "taipei · utc+8"
+}

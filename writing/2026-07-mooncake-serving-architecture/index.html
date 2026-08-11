@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What I learned from Mooncake — the serving architecture behind Kimi (Moonshot AI) — Vito Lin</title>
+<meta name="description" content="Notes on Mooncake's FAST '25 paper: disaggregated prefill/decode, a cluster-wide KVCache pool, and prefix hashing that skips prefill on a cache hit.">
+<link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What I learned from Mooncake — the serving architecture behind Kimi (Moonshot AI) — Vito Lin">
+<meta property="og:description" content="Notes on Mooncake's FAST '25 paper: disaggregated prefill/decode, a cluster-wide KVCache pool, and prefix hashing that skips prefill on a cache hit.">
+<meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/">
+<meta property="og:site_name" content="Vito Lin">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="/">Vito Lin</a>
+    <nav aria-label="Sections">
+      <a href="/about/">About</a>
+      <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <h1>What I learned from Mooncake — the serving architecture behind Kimi (Moonshot AI)</h1>
+      <p class="meta"><time datetime="2026-07-25">25 Jul 2026</time> · 1 minute read · <a href="https://www.linkedin.com/posts/vitothedev_%F0%9D%90%96%F0%9D%90%A1%F0%9D%90%9A%F0%9D%90%AD-%F0%9D%90%88-%F0%9D%90%A5%F0%9D%90%9E%F0%9D%90%9A%F0%9D%90%AB%F0%9D%90%A7%F0%9D%90%9E%F0%9D%90%9D-%F0%9D%90%9F%F0%9D%90%AB%F0%9D%90%A8%F0%9D%90%A6-%F0%9D%90%8C%F0%9D%90%A8%F0%9D%90%A8%F0%9D%90%A7%F0%9D%90%9C%F0%9D%90%9A%F0%9D%90%A4%F0%9D%90%9E-share-7486628452058726400-5j2z" rel="noopener">Discussion on LinkedIn</a></p>
+      <div class="prose">
+<p>I recently studied Mooncake's FAST '25 paper, <strong>&quot;Trading More Storage for Less Computation.&quot;</strong> The whole idea is <em>&quot;trade cheap storage for expensive computation&quot;</em>.</p>
+<h2>The problem</h2>
+<p>The KVCache stored in GPU HBM is so huge and expensive. Many systems keep KVCache local in each GPU, which makes it hard to reuse across requests.</p>
+<h2>Mooncake's solution</h2>
+<p>Mooncake's solution has three parts:</p>
+<ol><li><strong>Disaggregate prefill and decode.</strong> The two stages in inference have opposite resource requirements — prefill is compute-bound, decode is memory-bound.</li><li><strong>Build a global KVCache pool</strong> across the cluster's machines' CPU DRAM and SSD, connected by high-bandwidth RDMA NICs (which don't need the OS to move the data).</li><li><strong>Prefix-hash every KV block</strong> by its token prefix. Once there's a cache hit, prefill is skipped entirely.</li></ol>
+<h2>The results</h2>
+<p>Evaluated on two SLOs — TTFT for prefill latency, TBT for decode smoothness — Mooncake shows up to <strong>2.36×</strong> higher cache hit rate and <strong>48%</strong> less prefill compute versus local caching, and <strong>59%–498%</strong> higher effective request capacity versus vLLM (including vLLM's own prefix-caching and chunked-prefill). In production, Mooncake lets Kimi handle <strong>~75%</strong> more requests under the same SLOs. They also chart how the P/D ratio influences SLOs — performance is best in the <strong>7P9D</strong> to <strong>10P6D</strong> range.</p>
+<h2>What's next</h2>
+<p>The paper really inspired me, and it makes me want to dig into the Mooncake codebase. I might start reading the repo right now.</p>
+      </div>
+      <p class="backlink"><a href="/">&larr; Home</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>Follow via <a href="/feed.xml">RSS</a>, <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>, or <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper notes: how Llama 3 trains on 16K H100s — Vito Lin</title>
+<meta name="description" content="GQA and document masking in Llama 3's architecture, and the 4D parallelism strategy — TP, CP, PP, DP — that Meta used to fit the 405B run across a topology-aware cluster.">
+<link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paper notes: how Llama 3 trains on 16K H100s — Vito Lin">
+<meta property="og:description" content="GQA and document masking in Llama 3's architecture, and the 4D parallelism strategy — TP, CP, PP, DP — that Meta used to fit the 405B run across a topology-aware cluster.">
+<meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/">
+<meta property="og:site_name" content="Vito Lin">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="/">Vito Lin</a>
+    <nav aria-label="Sections">
+      <a href="/about/">About</a>
+      <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <h1>Paper notes: how Llama 3 trains on 16K H100s</h1>
+      <p class="meta"><time datetime="2026-08-09">9 Aug 2026</time> · 3 minute read · <a href="https://www.linkedin.com/posts/vitothedev_last-weekend-i-read-metas-paper-the-llama-share-7492217226167595008-CeRT" rel="noopener">Discussion on LinkedIn</a></p>
+      <div class="prose">
+<!--
+  TODO before publishing:
+  - Add the cluster topology image. The LinkedIn-hosted copy expires around
+    2026-08-27 (signed URL), so re-host it: save a copy into assets/ and
+    reference it as ![...](../../assets/llama3-cluster-topology.png)
+  - Consider one paragraph tying this back to your own work: does anything
+    here map onto time-slicing the RTX Pro 6000s, or onto how you've been
+    reasoning about KV cache sizing on the inference platform? Only add it
+    if there's a real connection — skip this if not.
+-->
+<p>Last weekend I read Meta's paper, <a href="https://arxiv.org/abs/2407.21783" rel="noopener">&quot;The Llama 3 Herd of Models&quot;</a>, which describes how Meta trained Llama 3. Two things stood out: two architectural choices, and the infrastructure built to train the 405B model on 16,000 H100s.</p>
+<h2>Two architectural choices</h2>
+<p>Llama 3 adopts GQA with 8 key-value heads, which shrinks the KV cache during decoding.</p>
+<p>During pre-training, document masking prevents tokens from attending across document boundaries. This improves data quality but introduces computational imbalance that the pipeline schedule has to absorb.</p>
+<h2>The cluster</h2>
+<p>Llama 3 was trained on 16K H100 GPUs. Each node has 8 GPUs connected with NVLink. The 405B run used a RoCE fabric, while the 70B and smaller models used NVIDIA Quantum2 InfiniBand; both fabrics use 400 Gbps interconnects between GPUs.</p>
+<p>The RoCE fabric is a three-layer Clos network:</p>
+<ul><li><strong>Bottom layer</strong> — each rack holds 16 GPUs across two servers</li><li><strong>Middle layer</strong> — 192 racks are joined by cluster switches into a pod of 3,072 GPUs with full bisection bandwidth</li><li><strong>Top layer</strong> — eight pods connect through aggregation switches into a 24K-GPU cluster, of which the 405B run used 16K</li></ul>
+<!-- image: three-layer Clos network diagram goes here -->
+<p>Because bandwidth degrades at the top layer, both the model parallelism strategy and the training job scheduler are topology-aware: communication-heavy dimensions (like TP) are placed close together, and latency-tolerant ones (like DP) are pushed outward, so traffic between pods stays minimal.</p>
+<h2>4D parallelism</h2>
+<p>The parallelism strategy is 4D: <strong>[TP, CP, PP, DP]</strong>. Each dimension carries its own trade-offs.</p>
+<p><strong>Pipeline parallelism.</strong> The schedule makes N — the number of micro-batches per batch — freely tunable, and one transformer layer is removed from each of the first and last stages to balance the pipeline. At large scale, where batch size is capped, the pipeline can run fewer micro-batches than the number of stages, or more micro-batches to hide point-to-point communication — landing somewhere between DFS and BFS scheduling for the best trade-off between communication and memory efficiency.</p>
+<p><strong>Context parallelism.</strong> The sequence is chunked into 2 × CP pieces, and the i-th CP rank receives both the i-th and the (2 × CP − 1 − i)-th chunk, so every rank gets one lightly-loaded chunk and one heavily-loaded one. The implementation uses all-gather rather than a ring, for two reasons: all-gather makes it easier to support different attention masks (like the document mask above), and because GQA keeps the key/value tensors much smaller than the query tensor — with attention costing O(S²) against all-gather's O(S) — the communication is cheap enough to leave exposed.</p>
+<p><strong>Ordering.</strong> The four dimensions are ordered by communication demand, from most bandwidth-hungry inward to most latency-tolerant outward. TP in particular is constrained to within a single node.</p>
+<p>That's how Meta fit the 405B Llama 3 training run onto 16K H100 GPUs.</p>
+      </div>
+      <p class="backlink"><a href="/">&larr; Home</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>Follow via <a href="/feed.xml">RSS</a>, <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>, or <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>
