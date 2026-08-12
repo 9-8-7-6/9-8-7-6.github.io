@@ -1,5 +1,5 @@
 ---
-title: "Paper notes: the operating-system ideas inside vLLM"
+title: "Paper notes: Efficient Memory Management for Large Language Model Serving with PagedAttention"
 date: 2026-07-30
 summary: "PagedAttention as virtual memory, copy-on-write prefix sharing, and all-or-nothing preemption — reading the vLLM paper as a catalogue of OS techniques applied to the KV cache."
 linkedin: https://www.linkedin.com/posts/vitothedev_last-weekend-i-studied-vllms-paper-efficient-share-7488609697684717568-B1uC
@@ -40,3 +40,5 @@ Scheduling is FCFS, to prevent starvation. Eviction is all-or-nothing: when memo
 ---
 
 The through-line of the paper is that none of these ideas are new — paging, copy-on-write, FCFS with preemption are all textbook OS material. What vLLM did was notice that the KV cache has exactly the allocation pattern operating systems spent fifty years learning to manage, and apply the known solutions.
+
+![vllm_flashattention](../../assets/vllm_flashattention.png)

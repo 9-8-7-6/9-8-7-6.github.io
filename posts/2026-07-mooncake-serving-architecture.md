@@ -1,5 +1,5 @@
 ---
-title: "What I learned from Mooncake — the serving architecture behind Kimi (Moonshot AI)"
+title: "Paper notes: Trading More Storage for Less Computation"
 date: 2026-07-25
 summary: "Notes on Mooncake's FAST '25 paper: disaggregated prefill/decode, a cluster-wide KVCache pool, and prefix hashing that skips prefill on a cache hit."
 linkedin: https://www.linkedin.com/posts/vitothedev_%F0%9D%90%96%F0%9D%90%A1%F0%9D%90%9A%F0%9D%90%AD-%F0%9D%90%88-%F0%9D%90%A5%F0%9D%90%9E%F0%9D%90%9A%F0%9D%90%AB%F0%9D%90%A7%F0%9D%90%9E%F0%9D%90%9D-%F0%9D%90%9F%F0%9D%90%AB%F0%9D%90%A8%F0%9D%90%A6-%F0%9D%90%8C%F0%9D%90%A8%F0%9D%90%A8%F0%9D%90%A7%F0%9D%90%9C%F0%9D%90%9A%F0%9D%90%A4%F0%9D%90%9E-share-7486628452058726400-5j2z
@@ -26,3 +26,5 @@ Evaluated on two SLOs — TTFT for prefill latency, TBT for decode smoothness �
 ## What's next
 
 The paper really inspired me, and it makes me want to dig into the Mooncake codebase. I might start reading the repo right now.
+
+![trading_more_storage_for_less_computation](../../assets/trading_more_storage_for_less_computation.png)

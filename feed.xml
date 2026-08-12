@@ -6,23 +6,23 @@
     <atom:link href="https://9-8-7-6.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Vito Lin writes Rust close to the metal and CUDA close to the silicon, and sends the fixes upstream.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 11 Aug 2026 15:57:53 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2026 15:49:30 GMT</lastBuildDate>
     <item>
-      <title>Paper notes: how Llama 3 trains on 16K H100s</title>
+      <title>Paper notes: The Llama 3 Herd of Models</title>
       <link>https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/</link>
       <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/</guid>
       <pubDate>Sun, 09 Aug 2026 09:00:00 GMT</pubDate>
       <description>GQA and document masking in Llama 3's architecture, and the 4D parallelism strategy — TP, CP, PP, DP — that Meta used to fit the 405B run across a topology-aware cluster.</description>
     </item>
     <item>
-      <title>Paper notes: the operating-system ideas inside vLLM</title>
+      <title>Paper notes: Efficient Memory Management for Large Language Model Serving with PagedAttention</title>
       <link>https://9-8-7-6.github.io/writing/2026-07-vllm-paged-attention/</link>
       <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-07-vllm-paged-attention/</guid>
       <pubDate>Thu, 30 Jul 2026 09:00:00 GMT</pubDate>
       <description>PagedAttention as virtual memory, copy-on-write prefix sharing, and all-or-nothing preemption — reading the vLLM paper as a catalogue of OS techniques applied to the KV cache.</description>
     </item>
     <item>
-      <title>What I learned from Mooncake — the serving architecture behind Kimi (Moonshot AI)</title>
+      <title>Paper notes: Trading More Storage for Less Computation</title>
       <link>https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/</link>
       <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/</guid>
       <pubDate>Sat, 25 Jul 2026 09:00:00 GMT</pubDate>

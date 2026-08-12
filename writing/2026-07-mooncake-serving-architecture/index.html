@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>What I learned from Mooncake — the serving architecture behind Kimi (Moonshot AI) — Vito Lin</title>
+<title>Paper notes: Trading More Storage for Less Computation — Vito Lin</title>
 <meta name="description" content="Notes on Mooncake's FAST '25 paper: disaggregated prefill/decode, a cluster-wide KVCache pool, and prefix hashing that skips prefill on a cache hit.">
 <link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="What I learned from Mooncake — the serving architecture behind Kimi (Moonshot AI) — Vito Lin">
+<meta property="og:title" content="Paper notes: Trading More Storage for Less Computation — Vito Lin">
 <meta property="og:description" content="Notes on Mooncake's FAST '25 paper: disaggregated prefill/decode, a cluster-wide KVCache pool, and prefix hashing that skips prefill on a cache hit.">
 <meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/">
 <meta property="og:site_name" content="Vito Lin">
@@ -32,7 +32,7 @@
 
   <main id="main">
     <article class="article">
-      <h1>What I learned from Mooncake — the serving architecture behind Kimi (Moonshot AI)</h1>
+      <h1>Paper notes: Trading More Storage for Less Computation</h1>
       <p class="meta"><time datetime="2026-07-25">25 Jul 2026</time> · 1 minute read · <a href="https://www.linkedin.com/posts/vitothedev_%F0%9D%90%96%F0%9D%90%A1%F0%9D%90%9A%F0%9D%90%AD-%F0%9D%90%88-%F0%9D%90%A5%F0%9D%90%9E%F0%9D%90%9A%F0%9D%90%AB%F0%9D%90%A7%F0%9D%90%9E%F0%9D%90%9D-%F0%9D%90%9F%F0%9D%90%AB%F0%9D%90%A8%F0%9D%90%A6-%F0%9D%90%8C%F0%9D%90%A8%F0%9D%90%A8%F0%9D%90%A7%F0%9D%90%9C%F0%9D%90%9A%F0%9D%90%A4%F0%9D%90%9E-share-7486628452058726400-5j2z" rel="noopener">Discussion on LinkedIn</a></p>
       <div class="prose">
 <p>I recently studied Mooncake's FAST '25 paper, <strong>&quot;Trading More Storage for Less Computation.&quot;</strong> The whole idea is <em>&quot;trade cheap storage for expensive computation&quot;</em>.</p>
@@ -45,13 +45,14 @@
 <p>Evaluated on two SLOs — TTFT for prefill latency, TBT for decode smoothness — Mooncake shows up to <strong>2.36×</strong> higher cache hit rate and <strong>48%</strong> less prefill compute versus local caching, and <strong>59%–498%</strong> higher effective request capacity versus vLLM (including vLLM's own prefix-caching and chunked-prefill). In production, Mooncake lets Kimi handle <strong>~75%</strong> more requests under the same SLOs. They also chart how the P/D ratio influences SLOs — performance is best in the <strong>7P9D</strong> to <strong>10P6D</strong> range.</p>
 <h2>What's next</h2>
 <p>The paper really inspired me, and it makes me want to dig into the Mooncake codebase. I might start reading the repo right now.</p>
+<p><img src="../../assets/trading_more_storage_for_less_computation.png" alt="trading_more_storage_for_less_computation" loading="lazy"></p>
       </div>
       <p class="backlink"><a href="/">&larr; Home</a></p>
     </article>
   </main>
 
   <footer class="footer">
-    <p>Follow via <a href="/feed.xml">RSS</a>, <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>, or <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/9-8-7-6" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
     <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
   </footer>
 </div>

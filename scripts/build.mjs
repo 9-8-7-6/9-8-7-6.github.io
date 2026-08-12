@@ -45,6 +45,11 @@ function inline(text) {
 function markdown(src) {
   const fences = [];
   let text = src.replace(/\r\n?/g, "\n");
+  // A "blank" line that carries invisible trailing whitespace (common after
+  // copy-pasting from a browser or word processor) would otherwise defeat the
+  // \n{2,} paragraph split below, silently merging separate paragraphs into
+  // one. Normalize any whitespace-only line to truly empty first.
+  text = text.replace(/^[ \t]+$/gm, "");
 
   // Pull fenced code out first so nothing else touches it.
   text = text.replace(/```([\w-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
@@ -238,34 +243,19 @@ function upstreamRows(pulls) {
 /* ---------- pages ---------- */
 
 function homePage(posts) {
-  const latest = posts[0];
   const repos = (gh.repos || []).filter((r) => !(site.hidden || []).includes(r.name));
 
-  const latestBlock = latest
-    ? `    <p class="kicker"><a href="${ROOT_PATH}${latest.url}">Latest</a></p>
-    <a class="latest" href="${ROOT_PATH}${latest.url}">
-      <h2>${escapeHtml(latest.title)}</h2>
-      <p class="meta"><time datetime="${latest.date}">${humanDate(latest.date)}</time> · ${Math.max(1, Math.round(latest.words / 220))} minute read</p>
-      ${latest.summary ? `<p class="excerpt">${escapeHtml(latest.summary)}</p>` : ""}
-      <span class="go">Keep reading &rarr;</span>
-    </a>`
-    : entryList([]);
-
-  const body = `${latestBlock}
-
-    <hr class="divider">
-
-    <p class="kicker"><a href="${ROOT_PATH}writing/">Writing</a></p>
+  const body = `    <p class="kicker"><a href="${ROOT_PATH}writing/">Writing</a></p>
 ${entryList(posts)}
 
     <hr class="divider">
 
-    <p class="kicker"><a href="${site.github}?tab=repositories" rel="me">Code</a></p>
+    <p class="kicker"><a href="${site.github}?tab=repositories" rel="me">GitHub Repo</a></p>
 ${repoRows(repos)}
 
     <hr class="divider">
 
-    <p class="kicker">Upstream</p>
+    <p class="kicker">Pull Requests</p>
 ${upstreamRows(gh.pulls || [])}`;
 
   return page({

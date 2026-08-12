@@ -1,5 +1,5 @@
 ---
-title: "Paper notes: how Llama 3 trains on 16K H100s"
+title: "Paper notes: The Llama 3 Herd of Models"
 date: 2026-08-09
 summary: "GQA and document masking in Llama 3's architecture, and the 4D parallelism strategy — TP, CP, PP, DP — that Meta used to fit the 405B run across a topology-aware cluster."
 linkedin: https://www.linkedin.com/posts/vitothedev_last-weekend-i-read-metas-paper-the-llama-share-7492217226167595008-CeRT
@@ -49,3 +49,5 @@ The parallelism strategy is 4D: **[TP, CP, PP, DP]**. Each dimension carries its
 **Ordering.** The four dimensions are ordered by communication demand, from most bandwidth-hungry inward to most latency-tolerant outward. TP in particular is constrained to within a single node.
 
 That's how Meta fit the 405B Llama 3 training run onto 16K H100 GPUs.
+
+![the_llama3_herd_of_models](../../assets/the_llama3_herd_of_models.png)

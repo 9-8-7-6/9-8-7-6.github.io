@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Paper notes: how Llama 3 trains on 16K H100s — Vito Lin</title>
+<title>Paper notes: The Llama 3 Herd of Models — Vito Lin</title>
 <meta name="description" content="GQA and document masking in Llama 3's architecture, and the 4D parallelism strategy — TP, CP, PP, DP — that Meta used to fit the 405B run across a topology-aware cluster.">
 <link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Paper notes: how Llama 3 trains on 16K H100s — Vito Lin">
+<meta property="og:title" content="Paper notes: The Llama 3 Herd of Models — Vito Lin">
 <meta property="og:description" content="GQA and document masking in Llama 3's architecture, and the 4D parallelism strategy — TP, CP, PP, DP — that Meta used to fit the 405B run across a topology-aware cluster.">
 <meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/">
 <meta property="og:site_name" content="Vito Lin">
@@ -32,7 +32,7 @@
 
   <main id="main">
     <article class="article">
-      <h1>Paper notes: how Llama 3 trains on 16K H100s</h1>
+      <h1>Paper notes: The Llama 3 Herd of Models</h1>
       <p class="meta"><time datetime="2026-08-09">9 Aug 2026</time> · 3 minute read · <a href="https://www.linkedin.com/posts/vitothedev_last-weekend-i-read-metas-paper-the-llama-share-7492217226167595008-CeRT" rel="noopener">Discussion on LinkedIn</a></p>
       <div class="prose">
 <!--
@@ -61,13 +61,14 @@
 <p><strong>Context parallelism.</strong> The sequence is chunked into 2 × CP pieces, and the i-th CP rank receives both the i-th and the (2 × CP − 1 − i)-th chunk, so every rank gets one lightly-loaded chunk and one heavily-loaded one. The implementation uses all-gather rather than a ring, for two reasons: all-gather makes it easier to support different attention masks (like the document mask above), and because GQA keeps the key/value tensors much smaller than the query tensor — with attention costing O(S²) against all-gather's O(S) — the communication is cheap enough to leave exposed.</p>
 <p><strong>Ordering.</strong> The four dimensions are ordered by communication demand, from most bandwidth-hungry inward to most latency-tolerant outward. TP in particular is constrained to within a single node.</p>
 <p>That's how Meta fit the 405B Llama 3 training run onto 16K H100 GPUs.</p>
+<p><img src="../../assets/the_llama3_herd_of_models.png" alt="the_llama3_herd_of_models" loading="lazy"></p>
       </div>
       <p class="backlink"><a href="/">&larr; Home</a></p>
     </article>
   </main>
 
   <footer class="footer">
-    <p>Follow via <a href="/feed.xml">RSS</a>, <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>, or <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/9-8-7-6" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
     <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
   </footer>
 </div>
