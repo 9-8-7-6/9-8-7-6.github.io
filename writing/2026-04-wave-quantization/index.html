@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why adding just 1 block can drop GPU utilization to 67% — Vito Lin</title>
+<meta name="description" content="Wave quantization: why grid sizes that don't divide evenly across SMs leave a nearly-idle last wave, why persistent kernels only half-fix it, and how Stream-K splits the remainder across SMs instead.">
+<link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-04-wave-quantization/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Why adding just 1 block can drop GPU utilization to 67% — Vito Lin">
+<meta property="og:description" content="Wave quantization: why grid sizes that don't divide evenly across SMs leave a nearly-idle last wave, why persistent kernels only half-fix it, and how Stream-K splits the remainder across SMs instead.">
+<meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-04-wave-quantization/">
+<meta property="og:site_name" content="Vito Lin">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="/">Vito Lin</a>
+    <nav aria-label="Sections">
+      <a href="/about/">About</a>
+      <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <h1>Why adding just 1 block can drop GPU utilization to 67%</h1>
+      <p class="meta"><time datetime="2026-04-20">20 Apr 2026</time> · 2 minute read · <a href="https://www.linkedin.com/posts/vitothedev_cuda-gpucomputing-parallelprogramming-activity-7451721286742966272-dBEf" rel="noopener">Discussion on LinkedIn</a></p>
+      <div class="prose">
+<p>Most people optimizing CUDA miss this. It's called <strong>wave quantization</strong>, and it's a critical bottleneck that prevents hardware from reaching its peak theoretical throughput.</p>
+<h2>Wave quantization</h2>
+<p>The scheduler tries to fully utilize SMs by distributing CTAs. But when total work is not perfectly divisible by SM count, the GPU must launch extra waves with low utilization.</p>
+<h2>What is a wave</h2>
+<p>A wave is one round where all SMs are assigned work (CTAs).</p>
+<ul><li><strong>Full wave</strong> — all SMs are busy.</li><li><strong>Partial wave</strong> — not enough work, so some SMs sit idle.</li></ul>
+<p>Performance drops even if the total workload is large.</p>
+<h2>Where the problem appears</h2>
+<p>Consider a GPU with a fixed SM count. When the grid size slightly exceeds a multiple of that count, the last wave becomes extremely inefficient:</p>
+<pre><code>Example (GPU: 108 SMs)
+
+Scenario A (good alignment):
+Grid size = 216
+Waves = 216 / 108 = 2 → 2 full waves
+Effective utilization = 100%
+
+Scenario B (wave quantization):
+Grid size = 217
+Waves = ceil(217 / 108) = 3 → last wave = 1 block → 107 SMs idle
+Effective utilization = 217 / (3 × 108) ≈ 67%</code></pre>
+<h2>Why this happens</h2>
+<p>Work is discretized into CTAs (tiles). The output matrix shape (<code>bM × bN</code>) is fixed at compile time, and the grid is <code>dim3(ceil(M/bM), ceil(N/bN))</code>. This rigid mapping causes imbalance in real workloads.</p>
+<h2>Persistent kernels — the first fix</h2>
+<p>Launch a number of blocks roughly equal to the number of SMs, instead of statically mapping one CTA to one tile. Blocks dynamically &quot;pull&quot; work using a global atomic counter — each block fetches the next tile when it finishes. Faster SMs end up doing more work, giving better load balance.</p>
+<pre><code class="language-c">int num_SMs;
+cudaGetDeviceAttribute(&amp;num_SMs, cudaDevAttrMultiProcessorCount, device_id);
+dim3 dimGrid(num_SMs); // match hardware</code></pre>
+<h2>Stream-K — the real solution</h2>
+<p>Persistent kernels solve the imbalance, but not the divisibility problem itself. Stream-K solves the &quot;remainder problem&quot; by splitting the workload into:</p>
+<ol><li><strong>Data-parallel tiles</strong> — perfectly aligned full waves.</li><li><strong>Stream-K tiles</strong> — the leftover work.</li></ol>
+<p>The Stream-K idea is to not assign leftover tiles as independent CTAs. Instead, it computes the total remaining workload (M × N × K) and evenly distributes it across all SMs — multiple SMs collaborate on the same output tile, splitting along the K dimension (a reduction), then combine results via atomics or a fix-up pass.</p>
+<h2>Key insight</h2>
+<p>GPU performance isn't just parallelism and memory optimization — it's also <strong>perfect work distribution</strong>.</p>
+<p><img src="../../assets/wave_quantization.jpeg" alt="Wave quantization: a partial last wave leaving SMs idle" loading="lazy"></p>
+      </div>
+      <p class="backlink"><a href="/">&larr; Home</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/9-8-7-6" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>

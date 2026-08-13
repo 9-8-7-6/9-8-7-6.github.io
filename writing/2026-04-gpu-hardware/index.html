@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What GPU hardware really taught me — Vito Lin</title>
+<meta name="description" content="SMs, warps, and SIMT execution — why GPU performance is about latency hiding and occupancy rather than raw thread count, and why memory, not compute, is usually the real bottleneck.">
+<link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-04-gpu-hardware/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What GPU hardware really taught me — Vito Lin">
+<meta property="og:description" content="SMs, warps, and SIMT execution — why GPU performance is about latency hiding and occupancy rather than raw thread count, and why memory, not compute, is usually the real bottleneck.">
+<meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-04-gpu-hardware/">
+<meta property="og:site_name" content="Vito Lin">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="/">Vito Lin</a>
+    <nav aria-label="Sections">
+      <a href="/about/">About</a>
+      <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <h1>What GPU hardware really taught me</h1>
+      <p class="meta"><time datetime="2026-04-13">13 Apr 2026</time> · 1 minute read · <a href="https://www.linkedin.com/posts/vitothedev_cuda-gpucomputing-parallelprogramming-activity-7449426276358049792-Gpv2" rel="noopener">Discussion on LinkedIn</a></p>
+      <div class="prose">
+<p>When I started learning CUDA, I always thought more threads lead to more performance. I was completely wrong.</p>
+<p>GPU is not only about latency — it's more about throughput. A CPU tries to finish one task faster; a GPU tries to finish millions of tasks together.</p>
+<h2>SM — the real compute engine</h2>
+<p>Kernels run on SMs (Streaming Multiprocessors). Each SM is composed of CUDA cores, Tensor Cores, registers, and shared memory. A GPU is many SMs running in parallel.</p>
+<h2>Warp — the real unit of execution</h2>
+<p>32 threads make one warp, executed in SIMT. The GPU does not execute threads independently — all 32 threads in the same warp run the same instruction.</p>
+<p>Branch divergence happens when a warp splits, and execution is serialized via thread masking:</p>
+<pre><code>Example
+if (condition) { ... }
+else { ... }</code></pre>
+<h2>Latency hiding, more than latency reduction</h2>
+<p>A CPU reduces latency; a GPU hides it. When one warp waits on a memory access, the SM switches to another warp instantly. Performance depends on having enough active warps to hide latency — this is <strong>occupancy</strong>.</p>
+<h2>Memory is the real bottleneck</h2>
+<p>The hierarchy, fastest to slowest: <strong>register → shared memory (on-chip) → L2 cache → global memory (very slow)</strong>. Most CUDA kernels are memory-bound.</p>
+<h2>Modern GPUs are specialized hardware</h2>
+<p>A GPU is no longer just CUDA cores.</p>
+<ul><li><strong>Tensor Core</strong> — one instruction performs matrix multiply-accumulate on small tiles.</li><li><strong>TMA (Tensor Memory Accelerator)</strong> — moves data from global to shared memory asynchronously.</li></ul>
+<h2>The real skill: hardware-aware thinking</h2>
+<ul><li>Minimize divergence</li><li>Maximize data reuse</li><li>Coalesce memory access</li><li>Balance resources</li></ul>
+<h2>Key insight</h2>
+<p>A GPU is a throughput machine, a latency-hiding system, and a memory-optimized architecture.</p>
+<p><img src="../../assets/gpu_hardware.jpeg" alt="GPU Hardware" loading="lazy"></p>
+      </div>
+      <p class="backlink"><a href="/">&larr; Home</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/9-8-7-6" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>

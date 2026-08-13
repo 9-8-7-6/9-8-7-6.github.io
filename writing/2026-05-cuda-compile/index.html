@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How CUDA is executed by the GPU — Vito Lin</title>
+<meta name="description" content="Between a .cu file and Tensor Cores sits a multi-stage compiler pipeline — CUDA C++, PTX, ptxas, SASS, and the fatbins that let one binary run on both an RTX 3090 and an H100.">
+<link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-05-cuda-compile/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How CUDA is executed by the GPU — Vito Lin">
+<meta property="og:description" content="Between a .cu file and Tensor Cores sits a multi-stage compiler pipeline — CUDA C++, PTX, ptxas, SASS, and the fatbins that let one binary run on both an RTX 3090 and an H100.">
+<meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-05-cuda-compile/">
+<meta property="og:site_name" content="Vito Lin">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="/">Vito Lin</a>
+    <nav aria-label="Sections">
+      <a href="/about/">About</a>
+      <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <h1>How CUDA is executed by the GPU</h1>
+      <p class="meta"><time datetime="2026-05-11">11 May 2026</time> · 2 minute read · <a href="https://www.linkedin.com/posts/vitothedev_cuda-gpucomputing-parallelprogramming-activity-7458898170488500224-YrsB" rel="noopener">Discussion on LinkedIn</a></p>
+      <div class="prose">
+<p>Between your <code>.cu</code> file and Tensor Cores, there is a high-stakes translation task happening inside the compiler process.</p>
+<h2>The CUDA compilation pipeline</h2>
+<p>Code goes through a multi-stage transformation:</p>
+<p><strong>CUDA C++ → PTX (Virtual ISA) → ptxas (the optimizer) → SASS (Real ISA)</strong></p>
+<p>Each step can either preserve your performance or destroy it through <strong>register spilling</strong>: too many variables means registers overflow, so data spills into local memory, and performance drops.</p>
+<h2>PTX: the virtual ISA layer</h2>
+<p>PTX (Parallel Thread Execution) is a virtual ISA.</p>
+<ul><li>It uses infinite virtual registers (<code>%r1</code>, <code>%r2</code>, ...).</li><li>It acts as a stable contract: write once in PTX, and it can run on future GPU generations with high compatibility.</li><li>It's the &quot;LLVM IR&quot; of the NVIDIA world.</li></ul>
+<h2>ptxas: the resource enforcer</h2>
+<p>This is where the real drama happens. <code>ptxas</code> takes the infinite world of PTX and squeezes it into the finite physical world of the SM.</p>
+<ul><li><strong>Register allocation.</strong> It maps those infinite <code>%r</code> registers to the 255 physical registers available per thread.</li><li><strong>The danger zone.</strong> If your kernel is too complex, <code>ptxas</code> triggers register spilling, moving data to slow local memory (VRAM), which leads to bad performance.</li></ul>
+<h2>SASS: the real ISA layer</h2>
+<p>SASS (Streaming Assembler) is the real ISA that the hardware actually executes. Unlike PTX, SASS is specific to your GPU architecture (e.g., <code>sm_90</code> for Hopper).</p>
+<p>SASS contains low-level scheduling hints and hard-coded register assignments. You can see it yourself with <code>cuobjdump -sass</code>.</p>
+<h2>Why &quot;fat binaries&quot; matter</h2>
+<p>To make software work on both an RTX 3090 and an H100, NVIDIA uses fatbins. A fatbin stores:</p>
+<ol><li>Multiple CUBINs (pre-compiled SASS for specific GPU versions).</li><li>The PTX source (for JIT compilation on future GPUs).</li></ol>
+<p>This makes sure a model doesn't break when a new GPU architecture is released.</p>
+<h2>The hidden optimization: inline PTX</h2>
+<p>Sometimes the <code>nvcc</code> compiler is too conservative, so power users inject inline PTX directly into C++ to trigger specific hardware features like <code>cp.async</code> (async copy) or Tensor Core MMA instructions. This bypasses high-level abstractions to talk directly to the hardware's capabilities.</p>
+<h2>Key insight</h2>
+<p>GPU performance isn't just about the algorithms you write in C++ — it's about how gracefully those algorithms survive the translation from virtual PTX to physical SASS.</p>
+<p><img src="../../assets/cuda_compile.jpeg" alt="The CUDA compilation pipeline: CUDA C++ to PTX to ptxas to SASS" loading="lazy"></p>
+      </div>
+      <p class="backlink"><a href="/">&larr; Home</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/9-8-7-6" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>

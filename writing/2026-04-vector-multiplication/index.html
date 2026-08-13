@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CUDA matrix multiplication: optimizing with shared memory and tiling — Vito Lin</title>
+<meta name="description" content="The difference between a slow and a fast matmul kernel isn't thread count — it's memory access pattern. How tiling turns a memory-bound problem into a compute-efficient one.">
+<link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-04-vector-multiplication/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CUDA matrix multiplication: optimizing with shared memory and tiling — Vito Lin">
+<meta property="og:description" content="The difference between a slow and a fast matmul kernel isn't thread count — it's memory access pattern. How tiling turns a memory-bound problem into a compute-efficient one.">
+<meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-04-vector-multiplication/">
+<meta property="og:site_name" content="Vito Lin">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="/">Vito Lin</a>
+    <nav aria-label="Sections">
+      <a href="/about/">About</a>
+      <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <h1>CUDA matrix multiplication: optimizing with shared memory and tiling</h1>
+      <p class="meta"><time datetime="2026-04-02">2 Apr 2026</time> · 1 minute read · <a href="https://www.linkedin.com/posts/vitothedev_cuda-gpucomputing-parallelprogramming-activity-7445287852264910848-8MOp" rel="noopener">Discussion on LinkedIn</a></p>
+      <div class="prose">
+<p>Matrix multiplication seems simple, but it's one of the hardest things to optimize. The difference between a &quot;slow&quot; and a &quot;fast&quot; kernel isn't the number of threads — it's how those threads access memory. One optimization method is <strong>tiling</strong>.</p>
+<p>Tiling means loading small chunks of the matrix into shared memory (on-chip) and reusing them multiple times, instead of the naive approach of reading from global memory for every single operation.</p>
+<h2>Naive approach is inefficient</h2>
+<p>Each thread repeatedly fetches data from global memory, leading to redundant data loads and huge latency. The GPU ends up waiting for data instead of calculating.</p>
+<h2>Tiling reduces global memory access</h2>
+<p>Divide matrices into small tiles (sub-matrices). Each thread block focuses on one tile at a time — load once, reuse many times.</p>
+<h2>Shared memory enables data reuse</h2>
+<p>Each block collaboratively loads a tile into shared memory (on-chip). Once the data is in shared memory, it's reused dozens of times at extremely high efficiency.</p>
+<h2>Key insight</h2>
+<p>Tiling transforms memory-bound problems into compute-efficient ones. True CUDA performance doesn't just come from parallelism — it comes from data locality and minimizing global memory traffic.</p>
+<p>Source code: <a href="https://github.com/9-8-7-6/cuda_practice/blob/c02461ac138991013db307f3a4095378163bdfe0/LeetGPU/Matrix_Multiplication.cu" rel="noopener">github.com</a></p>
+<p><img src="../../assets/matrix_multiplication.jpeg" alt="Shared-memory tiling for CUDA matrix multiplication" loading="lazy"></p>
+      </div>
+      <p class="backlink"><a href="/">&larr; Home</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/9-8-7-6" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>
