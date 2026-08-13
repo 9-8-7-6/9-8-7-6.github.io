@@ -6,7 +6,7 @@
     <atom:link href="https://9-8-7-6.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Vito Lin writes Rust close to the metal and CUDA close to the silicon, and sends the fixes upstream.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Aug 2026 15:06:44 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 15:28:12 GMT</lastBuildDate>
     <item>
       <title>Paper notes: The Llama 3 Herd of Models</title>
       <link>https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/</link>
@@ -62,6 +62,13 @@
       <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-04-wave-quantization/</guid>
       <pubDate>Mon, 20 Apr 2026 09:00:00 GMT</pubDate>
       <description>Wave quantization: why grid sizes that don't divide evenly across SMs leave a nearly-idle last wave, why persistent kernels only half-fix it, and how Stream-K splits the remainder across SMs instead.</description>
+    </item>
+    <item>
+      <title>What GPU hardware really taught me</title>
+      <link>https://9-8-7-6.github.io/writing/2026-04-cuda-memory/</link>
+      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-04-cuda-memory/</guid>
+      <pubDate>Mon, 13 Apr 2026 09:00:00 GMT</pubDate>
+      <description>SMs, warps, and SIMT execution — why GPU performance is about latency hiding and occupancy rather than raw thread count, and why memory, not compute, is usually the real bottleneck.</description>
     </item>
     <item>
       <title>What GPU hardware really taught me</title>
