@@ -6,7 +6,7 @@
     <atom:link href="https://9-8-7-6.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Vito Lin writes Rust close to the metal and CUDA close to the silicon, and sends the fixes upstream.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Aug 2026 15:06:44 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 13:03:05 GMT</lastBuildDate>
     <item>
       <title>Paper notes: The Llama 3 Herd of Models</title>
       <link>https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/</link>
@@ -83,6 +83,27 @@
       <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-04-vector-multiplication/</guid>
       <pubDate>Thu, 02 Apr 2026 09:00:00 GMT</pubDate>
       <description>The difference between a slow and a fast matmul kernel isn't thread count — it's memory access pattern. How tiling turns a memory-bound problem into a compute-efficient one.</description>
+    </item>
+    <item>
+      <title>CUDA's memory model: why memory, not compute, is the bottleneck</title>
+      <link>https://9-8-7-6.github.io/writing/2026-03-cuda-memory/</link>
+      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-03-cuda-memory/</guid>
+      <pubDate>Sun, 29 Mar 2026 09:00:00 GMT</pubDate>
+      <description>Registers, shared memory, global memory, constant memory, texture memory — where each one sits on-chip or off-chip, and why most CUDA performance issues trace back to global memory.</description>
+    </item>
+    <item>
+      <title>CUDA's memory model: why memory, not compute, is the bottleneck</title>
+      <link>https://9-8-7-6.github.io/writing/2026-03-execution-model/</link>
+      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-03-execution-model/</guid>
+      <pubDate>Sun, 29 Mar 2026 09:00:00 GMT</pubDate>
+      <description>Registers, shared memory, global memory, constant memory, texture memory — where each one sits on-chip or off-chip, and why most CUDA performance issues trace back to global memory.</description>
+    </item>
+    <item>
+      <title>First CUDA program: vector addition</title>
+      <link>https://9-8-7-6.github.io/writing/2026-03-cuda-vector-additon/</link>
+      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-03-cuda-vector-additon/</guid>
+      <pubDate>Sun, 22 Mar 2026 09:00:00 GMT</pubDate>
+      <description>The host/device split and the six-step memory dance every CUDA program follows — allocate, copy to GPU, execute, copy back, free — starting from the simplest possible kernel.</description>
     </item>
   </channel>
 </rss>

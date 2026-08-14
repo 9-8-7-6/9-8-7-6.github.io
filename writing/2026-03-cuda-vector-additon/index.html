@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First CUDA program: vector addition — Vito Lin</title>
+<meta name="description" content="The host/device split and the six-step memory dance every CUDA program follows — allocate, copy to GPU, execute, copy back, free — starting from the simplest possible kernel.">
+<link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-03-cuda-vector-additon/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="First CUDA program: vector addition — Vito Lin">
+<meta property="og:description" content="The host/device split and the six-step memory dance every CUDA program follows — allocate, copy to GPU, execute, copy back, free — starting from the simplest possible kernel.">
+<meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-03-cuda-vector-additon/">
+<meta property="og:site_name" content="Vito Lin">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="/">Vito Lin</a>
+    <nav aria-label="Sections">
+      <a href="/about/">About</a>
+      <a href="https://github.com/9-8-7-6" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <h1>First CUDA program: vector addition</h1>
+      <p class="meta"><time datetime="2026-03-22">22 Mar 2026</time> · 1 minute read · <a href="https://www.linkedin.com/posts/vitothedev_cuda-parallelcomputing-hpc-activity-7441457904911630336-XxnD" rel="noopener">Discussion on LinkedIn</a></p>
+      <div class="prose">
+<p>Today I implemented a CUDA program — vector addition on GPU.</p>
+<h2>Host vs. device</h2>
+<p>Host = CPU. Device = GPU.</p>
+<h2>Memory flow matters</h2>
+<p>Unlike typical CPU programs, CUDA requires explicit memory management:</p>
+<ol><li>Allocate memory on CPU</li><li>Allocate memory on GPU</li><li>Copy data to GPU</li><li>Execute kernel</li><li>Copy results back</li><li>Free memory</li></ol>
+<h2>Memory is everything in CUDA</h2>
+<p>Performance in CUDA is heavily tied to memory allocation, CPU ↔ GPU transfer, and memory access patterns.</p>
+<p>Source code: <a href="https://github.com/9-8-7-6/cuda_practice/blob/82f8a9a7098007508bf54f7bc47c8d1e2aaa730d/cuda_add.cu" rel="noopener">cuda_add.cu</a></p>
+<p><img src="../../assets/cuda_vector_addition.jpeg" alt="Vector addition running on the GPU" loading="lazy"></p>
+      </div>
+      <p class="backlink"><a href="/">&larr; Home</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/9-8-7-6" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>
