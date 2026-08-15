@@ -73,8 +73,8 @@
     {
       "name": "nanoGPT_124m_practice",
       "url": "https://github.com/9-8-7-6/nanoGPT_124m_practice",
-      "homepage": "https://github.com/karpathy/nanogpt",
-      "description": "Inspired from Andrej karpathy's nanogpt repo",
+      "homepage": "https://github.com/Karpathy/nanogpt",
+      "description": "Inspired from Andrej Karpathy's nanogpt repo",
       "language": "Jupyter Notebook",
       "topics": [],
       "stars": 0,

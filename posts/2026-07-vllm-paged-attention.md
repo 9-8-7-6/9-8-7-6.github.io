@@ -1,5 +1,5 @@
 ---
-title: "Paper notes: Efficient Memory Management for Large Language Model Serving with PagedAttention"
+title: "Paper notes: PagedAttention"
 date: 2026-07-30
 summary: "PagedAttention as virtual memory, copy-on-write prefix sharing, and all-or-nothing preemption — reading the vLLM paper as a catalogue of OS techniques applied to the KV cache."
 linkedin: https://www.linkedin.com/posts/vitothedev_last-weekend-i-studied-vllms-paper-efficient-share-7488609697684717568-B1uC

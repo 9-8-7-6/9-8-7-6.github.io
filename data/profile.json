@@ -36,7 +36,10 @@
       "note": "subscribe without an algorithm"
     }
   ],
-  "hidden": [],
+  "hidden": [
+    "9-8-7-6.github.io",
+    "leetgpu"
+  ],
   "tagline": "I'm Vito Lin, an AI infrastructure engineer in Taipei. I run LLM serving on real GPUs, read the papers behind the systems, and send the fixes upstream.",
   "stack": [
     "rust",

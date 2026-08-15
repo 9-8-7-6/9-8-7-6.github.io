@@ -1,38 +1,42 @@
 ---
-title: "CUDA's memory model: why memory, not compute, is the bottleneck"
-date: 2026-03-29
-summary: "Registers, shared memory, global memory, constant memory, texture memory — where each one sits on-chip or off-chip, and why most CUDA performance issues trace back to global memory."
-linkedin: https://www.linkedin.com/posts/vitothedev_cuda-memory-model-when-i-started-learning-activity-7444006890608521216-ogyT
+title: "CUDA's execution model: threads, warps, and how the GPU schedules them"
+date: 2026-03-25
+summary: "The thread/block/grid hierarchy, why GPUs schedule warps instead of individual threads, and why launch configuration is a performance decision, not just boilerplate."
+linkedin: https://www.linkedin.com/posts/vitothedev_cuda-gpucomputing-parallelprogramming-activity-7442587335290126337-jeYM
 ---
 
-When I started learning CUDA, I thought performance was about parallelism. I was wrong — memory is the real bottleneck.
+Most people think CUDA is just about parallel computation. It's not. Here's the CUDA execution model, and how the GPU orchestrates thousands of threads.
 
-## Memory hierarchy defines performance
+## The hierarchy defines everything
 
-Register → shared memory → global memory. Optimizing is more about minimizing slow memory access and maximizing data reuse than it is about parallelism itself.
+- **Thread** — the smallest unit of execution.
+- **Block** — a group of threads, scheduled on an SM.
+- **Grid** — a group of blocks, per kernel launch.
 
-## Registers: fastest but limited
+## GPUs don't execute threads individually
 
-Private to each thread, on-chip, allocated per thread.
+Threads are grouped into warps (32 threads); threads in a warp run together, executed on SMs using SIMT (Single Instruction, Multiple Threads).
 
-## Shared memory: the optimization playground
+## Indexing is where things get tricky
 
-Shared within a block, on-chip. Data reuse and tiling are critical for matrix operations — shared memory is where most performance gains come from.
+A thread index is only unique within a block. The global index is:
 
-## Global memory: large but costly
+```c
+idx = blockIdx.x * blockDim.x + threadIdx.x;
+```
 
-Accessible by all threads in a grid, off-chip. Most CUDA performance issues originate here.
+## Launch configuration is a performance decision
 
-## Constant memory
+```c
+dim3 grid_size(x, y, z);
+dim3 block_size(x, y, z);
+KernelName<<<grid_size, block_size>>>(...);
+```
 
-Read-only, cached. Efficient when all threads read the same value.
-
-## Texture memory
-
-Cached, optimized for spatial locality. Useful for irregular access patterns.
+This defines how your workload maps to hardware.
 
 ## Key insight
 
-CUDA performance is not compute-bound — it's memory-bound. Optimization is more about controlling how data moves than about how much you parallelize.
+CUDA is not just about parallelism. It's about execution structure.
 
-![The CUDA memory hierarchy: registers, shared memory, and global memory](../../assets/cuda_memory_model.jpeg)
+![The CUDA execution model: threads, warps, blocks, and grids](../../assets/cuda_execution_model.jpeg)

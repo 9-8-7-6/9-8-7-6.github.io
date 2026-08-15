@@ -3,14 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CUDA's memory model: why memory, not compute, is the bottleneck — Vito Lin</title>
-<meta name="description" content="Registers, shared memory, global memory, constant memory, texture memory — where each one sits on-chip or off-chip, and why most CUDA performance issues trace back to global memory.">
+<title>CUDA's execution model: threads, warps, and how the GPU schedules them — Vito Lin</title>
+<meta name="description" content="The thread/block/grid hierarchy, why GPUs schedule warps instead of individual threads, and why launch configuration is a performance decision, not just boilerplate.">
 <link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-03-execution-model/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CUDA's memory model: why memory, not compute, is the bottleneck — Vito Lin">
-<meta property="og:description" content="Registers, shared memory, global memory, constant memory, texture memory — where each one sits on-chip or off-chip, and why most CUDA performance issues trace back to global memory.">
+<meta property="og:title" content="CUDA's execution model: threads, warps, and how the GPU schedules them — Vito Lin">
+<meta property="og:description" content="The thread/block/grid hierarchy, why GPUs schedule warps instead of individual threads, and why launch configuration is a performance decision, not just boilerplate.">
 <meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-03-execution-model/">
 <meta property="og:site_name" content="Vito Lin">
+<meta property="og:image" content="{{ogimage}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="{{ogimage}}">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
@@ -32,25 +36,25 @@
 
   <main id="main">
     <article class="article">
-      <h1>CUDA's memory model: why memory, not compute, is the bottleneck</h1>
-      <p class="meta"><time datetime="2026-03-29">29 Mar 2026</time> · 1 minute read · <a href="https://www.linkedin.com/posts/vitothedev_cuda-memory-model-when-i-started-learning-activity-7444006890608521216-ogyT" rel="noopener">Discussion on LinkedIn</a></p>
+      <h1>CUDA's execution model: threads, warps, and how the GPU schedules them</h1>
+      <p class="meta"><time datetime="2026-03-25">25 Mar 2026</time> · 1 minute read · <a href="https://www.linkedin.com/posts/vitothedev_cuda-gpucomputing-parallelprogramming-activity-7442587335290126337-jeYM" rel="noopener">Discussion on LinkedIn</a></p>
       <div class="prose">
-<p>When I started learning CUDA, I thought performance was about parallelism. I was wrong — memory is the real bottleneck.</p>
-<h2>Memory hierarchy defines performance</h2>
-<p>Register → shared memory → global memory. Optimizing is more about minimizing slow memory access and maximizing data reuse than it is about parallelism itself.</p>
-<h2>Registers: fastest but limited</h2>
-<p>Private to each thread, on-chip, allocated per thread.</p>
-<h2>Shared memory: the optimization playground</h2>
-<p>Shared within a block, on-chip. Data reuse and tiling are critical for matrix operations — shared memory is where most performance gains come from.</p>
-<h2>Global memory: large but costly</h2>
-<p>Accessible by all threads in a grid, off-chip. Most CUDA performance issues originate here.</p>
-<h2>Constant memory</h2>
-<p>Read-only, cached. Efficient when all threads read the same value.</p>
-<h2>Texture memory</h2>
-<p>Cached, optimized for spatial locality. Useful for irregular access patterns.</p>
+<p>Most people think CUDA is just about parallel computation. It's not. Here's the CUDA execution model, and how the GPU orchestrates thousands of threads.</p>
+<h2>The hierarchy defines everything</h2>
+<ul><li><strong>Thread</strong> — the smallest unit of execution.</li><li><strong>Block</strong> — a group of threads, scheduled on an SM.</li><li><strong>Grid</strong> — a group of blocks, per kernel launch.</li></ul>
+<h2>GPUs don't execute threads individually</h2>
+<p>Threads are grouped into warps (32 threads); threads in a warp run together, executed on SMs using SIMT (Single Instruction, Multiple Threads).</p>
+<h2>Indexing is where things get tricky</h2>
+<p>A thread index is only unique within a block. The global index is:</p>
+<pre><code class="language-c">idx = blockIdx.x * blockDim.x + threadIdx.x;</code></pre>
+<h2>Launch configuration is a performance decision</h2>
+<pre><code class="language-c">dim3 grid_size(x, y, z);
+dim3 block_size(x, y, z);
+KernelName&lt;&lt;&lt;grid_size, block_size&gt;&gt;&gt;(...);</code></pre>
+<p>This defines how your workload maps to hardware.</p>
 <h2>Key insight</h2>
-<p>CUDA performance is not compute-bound — it's memory-bound. Optimization is more about controlling how data moves than about how much you parallelize.</p>
-<p><img src="../../assets/cuda_memory_model.jpeg" alt="The CUDA memory hierarchy: registers, shared memory, and global memory" loading="lazy"></p>
+<p>CUDA is not just about parallelism. It's about execution structure.</p>
+<p><img src="../../assets/cuda_execution_model.jpeg" alt="The CUDA execution model: threads, warps, blocks, and grids" loading="lazy"></p>
       </div>
       <p class="backlink"><a href="/">&larr; Home</a></p>
     </article>

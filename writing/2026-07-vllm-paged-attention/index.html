@@ -3,14 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Paper notes: Efficient Memory Management for Large Language Model Serving with PagedAttention — Vito Lin</title>
+<title>Paper notes: PagedAttention — Vito Lin</title>
 <meta name="description" content="PagedAttention as virtual memory, copy-on-write prefix sharing, and all-or-nothing preemption — reading the vLLM paper as a catalogue of OS techniques applied to the KV cache.">
 <link rel="canonical" href="https://9-8-7-6.github.io/writing/2026-07-vllm-paged-attention/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Paper notes: Efficient Memory Management for Large Language Model Serving with PagedAttention — Vito Lin">
+<meta property="og:title" content="Paper notes: PagedAttention — Vito Lin">
 <meta property="og:description" content="PagedAttention as virtual memory, copy-on-write prefix sharing, and all-or-nothing preemption — reading the vLLM paper as a catalogue of OS techniques applied to the KV cache.">
 <meta property="og:url" content="https://9-8-7-6.github.io/writing/2026-07-vllm-paged-attention/">
 <meta property="og:site_name" content="Vito Lin">
+<meta property="og:image" content="{{ogimage}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="{{ogimage}}">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
@@ -32,7 +36,7 @@
 
   <main id="main">
     <article class="article">
-      <h1>Paper notes: Efficient Memory Management for Large Language Model Serving with PagedAttention</h1>
+      <h1>Paper notes: PagedAttention</h1>
       <p class="meta"><time datetime="2026-07-30">30 Jul 2026</time> · 2 minute read · <a href="https://www.linkedin.com/posts/vitothedev_last-weekend-i-studied-vllms-paper-efficient-share-7488609697684717568-B1uC" rel="noopener">Discussion on LinkedIn</a></p>
       <div class="prose">
 <!--
