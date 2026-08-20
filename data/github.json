@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-08-19T21:43:11.598Z",
+  "generated_at": "2026-08-20T21:45:31.519Z",
   "user": {
-    "login": "9-8-7-6",
+    "login": "vito-lin-dev",
     "name": "Vito Lin",
     "bio": "Rust + Cuda\r\n",
     "avatar": "https://avatars.githubusercontent.com/u/49185295?v=4",
     "location": "Taiwan",
     "followers": 8,
-    "url": "https://github.com/9-8-7-6"
+    "url": "https://github.com/vito-lin-dev"
   },
   "stats": {
     "repos": 6,
@@ -24,7 +24,7 @@
   "repos": [
     {
       "name": "cs-notes",
-      "url": "https://github.com/9-8-7-6/cs-notes",
+      "url": "https://github.com/vito-lin-dev/cs-notes",
       "homepage": null,
       "description": "A collection of computer science notes.",
       "language": "C",
@@ -36,7 +36,7 @@
     },
     {
       "name": "cuda_practice",
-      "url": "https://github.com/9-8-7-6/cuda_practice",
+      "url": "https://github.com/vito-lin-dev/cuda_practice",
       "homepage": null,
       "description": "Some code about CUDA",
       "language": "Cuda",
@@ -48,7 +48,7 @@
     },
     {
       "name": "vito",
-      "url": "https://github.com/9-8-7-6/vito",
+      "url": "https://github.com/vito-lin-dev/vito",
       "homepage": "https://vito-tw.com/login#/",
       "description": "A bookkeeping system written in Rust",
       "language": "Rust",
@@ -59,20 +59,20 @@
       "created_at": "2025-03-03T10:54:28Z"
     },
     {
-      "name": "9-8-7-6.github.io",
-      "url": "https://github.com/9-8-7-6/9-8-7-6.github.io",
-      "homepage": null,
+      "name": "profile",
+      "url": "https://github.com/vito-lin-dev/profile",
+      "homepage": "https://vito-lin-dev.github.io/profile/",
       "description": "",
       "language": "HTML",
       "topics": [],
       "stars": 0,
       "forks": 0,
-      "pushed_at": "2026-08-18T21:40:59Z",
+      "pushed_at": "2026-08-19T21:43:12Z",
       "created_at": "2026-08-10T14:20:09Z"
     },
     {
       "name": "nanoGPT_124m_practice",
-      "url": "https://github.com/9-8-7-6/nanoGPT_124m_practice",
+      "url": "https://github.com/vito-lin-dev/nanoGPT_124m_practice",
       "homepage": "https://github.com/karpathy/nanogpt",
       "description": "Inspired from Andrej karpathy's nanogpt repo",
       "language": "Jupyter Notebook",
@@ -84,7 +84,7 @@
     },
     {
       "name": "leetgpu",
-      "url": "https://github.com/9-8-7-6/leetgpu",
+      "url": "https://github.com/vito-lin-dev/leetgpu",
       "homepage": null,
       "description": "",
       "language": "HTML",
