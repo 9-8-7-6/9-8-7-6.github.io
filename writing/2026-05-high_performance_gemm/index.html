@@ -5,30 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Register tiling: the foundation of high-performance CUDA GEMM — Vito Lin</title>
 <meta name="description" content="Shared memory isn't the end of the optimization pipeline — how loading tile fragments into registers gets 2.5x–3x more throughput than shared memory alone, and why register pressure is the tradeoff that limits it.">
-<link rel="canonical" href="https://vito-lin-dev.github.io/writing/2026-05-high_performance_gemm/">
+<link rel="canonical" href="https://vito-lin-dev.github.io/profile/writing/2026-05-high_performance_gemm/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Register tiling: the foundation of high-performance CUDA GEMM — Vito Lin">
 <meta property="og:description" content="Shared memory isn't the end of the optimization pipeline — how loading tile fragments into registers gets 2.5x–3x more throughput than shared memory alone, and why register pressure is the tradeoff that limits it.">
-<meta property="og:url" content="https://vito-lin-dev.github.io/writing/2026-05-high_performance_gemm/">
+<meta property="og:url" content="https://vito-lin-dev.github.io/profile/writing/2026-05-high_performance_gemm/">
 <meta property="og:site_name" content="Vito Lin">
-<meta property="og:image" content="{{ogimage}}">
+<meta property="og:image" content="https://vito-lin-dev.github.io/profile/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta name="twitter:image" content="{{ogimage}}">
+<meta name="twitter:image" content="https://vito-lin-dev.github.io/profile/assets/og-image.png">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
-<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/profile/feed.xml">
+<link rel="icon" href="/profile/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/profile/assets/style.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
   <header class="masthead">
-    <a class="name" href="/">Vito Lin</a>
+    <a class="name" href="/profile/">Vito Lin</a>
     <nav aria-label="Sections">
-      <a href="/about/">About</a>
+      <a href="/profile/about/">About</a>
       <a href="https://github.com/vito-lin-dev" rel="me">GitHub</a>
       <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
     </nav>
@@ -56,12 +56,12 @@
 <p>In testing, using 1D tiling with register reuse achieved roughly <strong>2.5×–3×</strong> higher performance compared to using shared memory alone. At the same time, memory bandwidth utilization improved by nearly <strong>2.5×–3.5×</strong>, because the kernel was able to perform more computation per byte loaded from memory.</p>
 <p><img src="../../assets/high_performance_cuda_gemm.jpeg" alt="Global memory to shared memory to register data flow in high-performance CUDA GEMM" loading="lazy"></p>
       </div>
-      <p class="backlink"><a href="/">&larr; Home</a></p>
+      <p class="backlink"><a href="/profile/">&larr; Home</a></p>
     </article>
   </main>
 
   <footer class="footer">
-    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/vito-lin-dev" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>Subscribe via <a href="/profile/feed.xml">RSS</a>, or find me on <a href="https://github.com/vito-lin-dev" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
     <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
   </footer>
 </div>

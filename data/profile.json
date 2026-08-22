@@ -2,8 +2,8 @@
   "name": "Vito Lin",
   "handle": "vito-lin-dev",
   "role": "Systems and GPU programming",
-  "siteurl": "https://vito-lin-dev.github.io",
-  "baseurl": "/",
+  "siteurl": "https://vito-lin-dev.github.io/profile",
+  "baseurl": "/profile/",
   "lang": "en",
   "description": "Vito Lin writes Rust close to the metal and CUDA close to the silicon, and sends the fixes upstream.",
   "hero": "Rust close to the metal. CUDA close to the silicon.",
@@ -18,7 +18,7 @@
   ],
   "github": "https://github.com/vito-lin-dev",
   "linkedin": "https://www.linkedin.com/in/vitothedev",
-  "sourceurl": "https://github.com/vito-lin-dev/vito-lin-dev.github.io",
+  "sourceurl": "https://github.com/vito-lin-dev/profile",
   "links": [
     {
       "label": "GitHub",
@@ -32,12 +32,12 @@
     },
     {
       "label": "RSS",
-      "url": "/feed.xml",
+      "url": "https://vito-lin-dev.github.io/profile/feed.xml",
       "note": "subscribe without an algorithm"
     }
   ],
   "hidden": [
-    "vito-lin-dev.github.io",
+    "profile",
     "leetgpu"
   ],
   "tagline": "I'm Vito Lin, an AI infrastructure engineer in Taipei. I run LLM serving on real GPUs, read the papers behind the systems, and send the fixes upstream.",

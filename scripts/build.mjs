@@ -180,6 +180,7 @@ function page({ title, description, body, canonical, ogtype = "website", current
     .replace(/\{\{description\}\}/g, escapeHtml(description))
     .replace(/\{\{canonical\}\}/g, canonical)
     .replace(/\{\{ogtype\}\}/g, ogtype)
+    .replace(/\{\{ogimage\}\}/g, linkOf("assets/og-image.png"))
     .replace(/\{\{sitename\}\}/g, escapeHtml(site.name))
     .replace(/\{\{name\}\}/g, escapeHtml(site.name))
     .replace(/\{\{root\}\}/g, ROOT_PATH)
