@@ -8,7 +8,7 @@
 
 import { writeFile, readFile } from "node:fs/promises";
 
-const USER = process.env.GH_USER || "9-8-7-6";
+const USER = process.env.GH_USER || "vito-lin-dev";
 const TOKEN = process.env.GITHUB_TOKEN || "";
 
 const headers = {

@@ -1,8 +1,8 @@
 {
   "name": "Vito Lin",
-  "handle": "9-8-7-6",
+  "handle": "vito-lin-dev",
   "role": "Systems and GPU programming",
-  "siteurl": "https://9-8-7-6.github.io",
+  "siteurl": "https://vito-lin-dev.github.io",
   "baseurl": "/",
   "lang": "en",
   "description": "Vito Lin writes Rust close to the metal and CUDA close to the silicon, and sends the fixes upstream.",
@@ -16,13 +16,13 @@
     "The pattern in my work is small and consistent. When a dependency is broken or its documentation is wrong, I patch it upstream. That is slower than a local workaround, and it is the only version that helps the next person who hits the same wall.",
     "I write here about the problems that cost me a day and should have cost an hour. If something is wrong, tell me -- I would rather be corrected than quoted."
   ],
-  "github": "https://github.com/9-8-7-6",
+  "github": "https://github.com/vito-lin-dev",
   "linkedin": "https://www.linkedin.com/in/vitothedev",
-  "sourceurl": "https://github.com/9-8-7-6/9-8-7-6.github.io",
+  "sourceurl": "https://github.com/vito-lin-dev/vito-lin-dev.github.io",
   "links": [
     {
       "label": "GitHub",
-      "url": "https://github.com/9-8-7-6",
+      "url": "https://github.com/vito-lin-dev",
       "note": "code and patches"
     },
     {
@@ -37,7 +37,7 @@
     }
   ],
   "hidden": [
-    "9-8-7-6.github.io",
+    "vito-lin-dev.github.io",
     "leetgpu"
   ],
   "tagline": "I'm Vito Lin, an AI infrastructure engineer in Taipei. I run LLM serving on real GPUs, read the papers behind the systems, and send the fixes upstream.",

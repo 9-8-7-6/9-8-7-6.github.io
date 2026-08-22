@@ -26,6 +26,6 @@ Unlike typical CPU programs, CUDA requires explicit memory management:
 
 Performance in CUDA is heavily tied to memory allocation, CPU ↔ GPU transfer, and memory access patterns.
 
-Source code: [cuda_add.cu](https://github.com/9-8-7-6/cuda_practice/blob/82f8a9a7098007508bf54f7bc47c8d1e2aaa730d/cuda_add.cu)
+Source code: [cuda_add.cu](https://github.com/vito-lin-dev/cuda_practice/blob/82f8a9a7098007508bf54f7bc47c8d1e2aaa730d/cuda_add.cu)
 
 ![Vector addition running on the GPU](../../assets/cuda_vector_addition.jpeg)

@@ -25,6 +25,6 @@ Each block collaboratively loads a tile into shared memory (on-chip). Once the d
 
 Tiling transforms memory-bound problems into compute-efficient ones. True CUDA performance doesn't just come from parallelism — it comes from data locality and minimizing global memory traffic.
 
-Source code: [github.com](https://github.com/9-8-7-6/cuda_practice/blob/c02461ac138991013db307f3a4095378163bdfe0/LeetGPU/Matrix_Multiplication.cu)
+Source code: [github.com](https://github.com/vito-lin-dev/cuda_practice/blob/c02461ac138991013db307f3a4095378163bdfe0/LeetGPU/Matrix_Multiplication.cu)
 
 ![Shared-memory tiling for CUDA matrix multiplication](../../assets/matrix_multiplication.jpeg)

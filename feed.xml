@@ -2,106 +2,113 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Vito Lin</title>
-    <link>https://9-8-7-6.github.io/</link>
-    <atom:link href="https://9-8-7-6.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <link>https://vito-lin-dev.github.io/</link>
+    <atom:link href="https://vito-lin-dev.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Vito Lin writes Rust close to the metal and CUDA close to the silicon, and sends the fixes upstream.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 21 Aug 2026 21:41:36 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 22 Aug 2026 08:47:26 GMT</lastBuildDate>
+    <item>
+      <title>Pretraining and fine-tuning nanoGPT-124M from scratch</title>
+      <link>https://vito-lin-dev.github.io/writing/2026-08-pretraining_and_fine-tuning_nanoGPT-124m_from_scratch/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-08-pretraining_and_fine-tuning_nanoGPT-124m_from_scratch/</guid>
+      <pubDate>Tue, 18 Aug 2026 09:00:00 GMT</pubDate>
+      <description>Building a 124M-parameter GPT-2 from scratch, then turning it from a text-completion model into an instruction-following one with SFT — plus the systems bugs that ate more time than the model itself.</description>
+    </item>
     <item>
       <title>Paper notes: The Llama 3 Herd of Models</title>
-      <link>https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-08-llama-3-training-infrastructure/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-08-llama-3-training-infrastructure/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-08-llama-3-training-infrastructure/</guid>
       <pubDate>Sun, 09 Aug 2026 09:00:00 GMT</pubDate>
       <description>GQA and document masking in Llama 3's architecture, and the 4D parallelism strategy — TP, CP, PP, DP — that Meta used to fit the 405B run across a topology-aware cluster.</description>
     </item>
     <item>
       <title>Paper notes: PagedAttention</title>
-      <link>https://9-8-7-6.github.io/writing/2026-07-vllm-paged-attention/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-07-vllm-paged-attention/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-07-vllm-paged-attention/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-07-vllm-paged-attention/</guid>
       <pubDate>Thu, 30 Jul 2026 09:00:00 GMT</pubDate>
       <description>PagedAttention as virtual memory, copy-on-write prefix sharing, and all-or-nothing preemption — reading the vLLM paper as a catalogue of OS techniques applied to the KV cache.</description>
     </item>
     <item>
       <title>Paper notes: Trading More Storage for Less Computation</title>
-      <link>https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-07-mooncake-serving-architecture/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-07-mooncake-serving-architecture/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-07-mooncake-serving-architecture/</guid>
       <pubDate>Sat, 25 Jul 2026 09:00:00 GMT</pubDate>
       <description>Notes on Mooncake's FAST '25 paper: disaggregated prefill/decode, a cluster-wide KVCache pool, and prefix hashing that skips prefill on a cache hit.</description>
     </item>
     <item>
       <title>Resources that helped me transition into AI Infrastructure</title>
-      <link>https://9-8-7-6.github.io/writing/2026-07-ai-infra-resource/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-07-ai-infra-resource/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-07-ai-infra-resource/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-07-ai-infra-resource/</guid>
       <pubDate>Sun, 19 Jul 2026 09:00:00 GMT</pubDate>
       <description>Everything I read, watched, and cloned this year while moving into AI Infrastructure — GPU programming, LLM internals, and the systems around serving them.</description>
     </item>
     <item>
       <title>Register tiling: the foundation of high-performance CUDA GEMM</title>
-      <link>https://9-8-7-6.github.io/writing/2026-05-high_performance_gemm/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-05-high_performance_gemm/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-05-high_performance_gemm/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-05-high_performance_gemm/</guid>
       <pubDate>Tue, 26 May 2026 09:00:00 GMT</pubDate>
       <description>Shared memory isn't the end of the optimization pipeline — how loading tile fragments into registers gets 2.5x–3x more throughput than shared memory alone, and why register pressure is the tradeoff that limits it.</description>
     </item>
     <item>
       <title>Becoming a contributor to NVIDIA's cuda-oxide</title>
-      <link>https://9-8-7-6.github.io/writing/2026-05-cuda-oxide/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-05-cuda-oxide/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-05-cuda-oxide/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-05-cuda-oxide/</guid>
       <pubDate>Wed, 13 May 2026 09:00:00 GMT</pubDate>
       <description>cuda-oxide compiles Rust directly to PTX, with no wrappers, DSLs, or FFI overhead. Notes on why that excites me, and on the patches I contributed to get there.</description>
     </item>
     <item>
       <title>How CUDA is executed by the GPU</title>
-      <link>https://9-8-7-6.github.io/writing/2026-05-cuda-compile/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-05-cuda-compile/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-05-cuda-compile/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-05-cuda-compile/</guid>
       <pubDate>Mon, 11 May 2026 09:00:00 GMT</pubDate>
       <description>Between a .cu file and Tensor Cores sits a multi-stage compiler pipeline — CUDA C++, PTX, ptxas, SASS, and the fatbins that let one binary run on both an RTX 3090 and an H100.</description>
     </item>
     <item>
       <title>Why adding just 1 block can drop GPU utilization to 67%</title>
-      <link>https://9-8-7-6.github.io/writing/2026-04-wave-quantization/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-04-wave-quantization/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-04-wave-quantization/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-04-wave-quantization/</guid>
       <pubDate>Mon, 20 Apr 2026 09:00:00 GMT</pubDate>
       <description>Wave quantization: why grid sizes that don't divide evenly across SMs leave a nearly-idle last wave, why persistent kernels only half-fix it, and how Stream-K splits the remainder across SMs instead.</description>
     </item>
     <item>
       <title>What GPU hardware really taught me</title>
-      <link>https://9-8-7-6.github.io/writing/2026-04-gpu-hardware/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-04-gpu-hardware/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-04-gpu-hardware/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-04-gpu-hardware/</guid>
       <pubDate>Mon, 13 Apr 2026 09:00:00 GMT</pubDate>
       <description>SMs, warps, and SIMT execution — why GPU performance is about latency hiding and occupancy rather than raw thread count, and why memory, not compute, is usually the real bottleneck.</description>
     </item>
     <item>
       <title>How to practice CUDA without a GPU (for free)</title>
-      <link>https://9-8-7-6.github.io/writing/2026-04-cuda-practice/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-04-cuda-practice/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-04-cuda-practice/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-04-cuda-practice/</guid>
       <pubDate>Sun, 05 Apr 2026 09:00:00 GMT</pubDate>
       <description>You don't need to own an NVIDIA GPU to start learning CUDA — a rundown of eight cloud platforms with free GPU access, from Colab and Kaggle to CUDA-specific practice sites.</description>
     </item>
     <item>
       <title>CUDA matrix multiplication: optimizing with shared memory and tiling</title>
-      <link>https://9-8-7-6.github.io/writing/2026-04-vector-multiplication/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-04-vector-multiplication/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-04-vector-multiplication/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-04-vector-multiplication/</guid>
       <pubDate>Thu, 02 Apr 2026 09:00:00 GMT</pubDate>
       <description>The difference between a slow and a fast matmul kernel isn't thread count — it's memory access pattern. How tiling turns a memory-bound problem into a compute-efficient one.</description>
     </item>
     <item>
       <title>CUDA's memory model: why memory, not compute, is the bottleneck</title>
-      <link>https://9-8-7-6.github.io/writing/2026-03-cuda-memory/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-03-cuda-memory/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-03-cuda-memory/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-03-cuda-memory/</guid>
       <pubDate>Sun, 29 Mar 2026 09:00:00 GMT</pubDate>
       <description>Registers, shared memory, global memory, constant memory, texture memory — where each one sits on-chip or off-chip, and why most CUDA performance issues trace back to global memory.</description>
     </item>
     <item>
       <title>CUDA's execution model: threads, warps, and how the GPU schedules them</title>
-      <link>https://9-8-7-6.github.io/writing/2026-03-execution-model/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-03-execution-model/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-03-execution-model/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-03-execution-model/</guid>
       <pubDate>Wed, 25 Mar 2026 09:00:00 GMT</pubDate>
       <description>The thread/block/grid hierarchy, why GPUs schedule warps instead of individual threads, and why launch configuration is a performance decision, not just boilerplate.</description>
     </item>
     <item>
       <title>First CUDA program: vector addition</title>
-      <link>https://9-8-7-6.github.io/writing/2026-03-cuda-vector-additon/</link>
-      <guid isPermaLink="true">https://9-8-7-6.github.io/writing/2026-03-cuda-vector-additon/</guid>
+      <link>https://vito-lin-dev.github.io/writing/2026-03-cuda-vector-additon/</link>
+      <guid isPermaLink="true">https://vito-lin-dev.github.io/writing/2026-03-cuda-vector-additon/</guid>
       <pubDate>Sun, 22 Mar 2026 09:00:00 GMT</pubDate>
       <description>The host/device split and the six-step memory dance every CUDA program follows — allocate, copy to GPU, execute, copy back, free — starting from the simplest possible kernel.</description>
     </item>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pretraining and fine-tuning nanoGPT-124M from scratch — Vito Lin</title>
+<meta name="description" content="Building a 124M-parameter GPT-2 from scratch, then turning it from a text-completion model into an instruction-following one with SFT — plus the systems bugs that ate more time than the model itself.">
+<link rel="canonical" href="https://vito-lin-dev.github.io/writing/2026-08-pretraining_and_fine-tuning_nanoGPT-124m_from_scratch/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pretraining and fine-tuning nanoGPT-124M from scratch — Vito Lin">
+<meta property="og:description" content="Building a 124M-parameter GPT-2 from scratch, then turning it from a text-completion model into an instruction-following one with SFT — plus the systems bugs that ate more time than the model itself.">
+<meta property="og:url" content="https://vito-lin-dev.github.io/writing/2026-08-pretraining_and_fine-tuning_nanoGPT-124m_from_scratch/">
+<meta property="og:site_name" content="Vito Lin">
+<meta property="og:image" content="{{ogimage}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="{{ogimage}}">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFCF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0F" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="Vito Lin" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="masthead">
+    <a class="name" href="/">Vito Lin</a>
+    <nav aria-label="Sections">
+      <a href="/about/">About</a>
+      <a href="https://github.com/vito-lin-dev" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <h1>Pretraining and fine-tuning nanoGPT-124M from scratch</h1>
+      <p class="meta"><time datetime="2026-08-18">18 Aug 2026</time> · 3 minute read · <a href="https://www.linkedin.com/pulse/pretraining-fine-tuning-nanogpt-124m-from-scratch-vito-lin-7tn4c" rel="noopener">Discussion on LinkedIn</a></p>
+      <div class="prose">
+<p>Last week I built, pretrained, and tuned a 124M-parameter GPT-2-style LLM from scratch, following Andrej Karpathy's nanoGPT. Rather than reproducing the pretraining only, I extended the practice with a supervised fine-tuning stage — turning a raw text-completion model into an instruction-following model.</p>
+<h2>Architecture</h2>
+<p>The model is a standard decoder-only Transformer inspired by GPT-2:</p>
+<ul><li><strong>Token embedding (wte):</strong> 50,304 × 768 (vocab padded from 50,257 up to a multiple of 128 for GPU-friendly dimensions)</li><li><strong>Position embedding (wpe):</strong> 1,024 × 768, using learned positional embeddings to encode token positions within a context window of up to 1,024 tokens</li><li><strong>12 Transformer blocks:</strong> 12 attention heads × 64 dimensions, using PyTorch's fused <code>scaled_dot_product_attention</code> (Flash Attention)</li><li><strong>MLP:</strong> 768 → 3,072 → 768, with a 4× hidden expansion and GELU activation</li><li><strong>Output head:</strong> final LayerNorm followed by a 768 → 50,304 linear projection</li><li><strong>Weight tying:</strong> <code>lm_head</code> and <code>wte</code> share the same weight matrix, reducing the parameter count by roughly 38M</li><li><strong>Initialization:</strong> GPT-2-style initialization with <code>std=0.02</code>, while residual projections are scaled by <code>1/sqrt(2·layers)</code> to stabilize residual-stream variance</li></ul>
+<p>As a sanity check, the initial loss was approximately <code>ln(50,304) ≈ 10.83</code>, matching the theoretical value for a uniformly random next-token distribution.</p>
+<h2>Pretraining</h2>
+<ul><li><strong>Data:</strong> FineWeb-Edu (sample-10BT) — ~10B GPT-2 BPE tokens of high-quality educational web text, sharded into 100 × 100M-token files</li><li><strong>Objective:</strong> next-token prediction with cross-entropy loss (self-supervised, no labels needed)</li><li><strong>Recipe:</strong> effective batch of 524,288 tokens (micro-batch 16 × 1,024 context × 32 gradient-accumulation steps), AdamW (β=(0.9, 0.95), weight decay 0.1 on 2D matrices only), LR warmup for 715 steps then cosine decay 6e-4 → 6e-5, global-norm gradient clipping at 1.0, bf16 autocast</li><li><strong>Run:</strong> 19,073 steps (~1 epoch over 10B tokens) on an H100 — ~3 hours at ~245k tokens/sec (~37% MFU)</li><li><strong>Evaluation during training:</strong> validation loss, plus HellaSwag (zero-shot, completion-style: score each candidate ending by masked average loss, pick the argmin). Started at 24.8% — random-guess level for a 4-way multiple choice — confirming clean initialization</li></ul>
+<p>The result is a base model: fluent at endless text, but if you ask it a question, it just keeps writing text without &quot;answering.&quot;</p>
+<h2>Supervised fine-tuning</h2>
+<ul><li><strong>Data:</strong> Stanford Alpaca — 52K instruction–response pairs, formatted with the standard Alpaca prompt template, each response terminated with <code>&lt;|endoftext|&gt;</code></li><li><strong>Key mechanism — loss masking:</strong> target tokens for the instruction portion are set to <code>-1</code>, which <code>F.cross_entropy(ignore_index=-1)</code> skips. Gradients flow only from the response tokens, so the model learns how to answer, not how to write questions.</li><li><strong>Recipe:</strong> LR 2e-5 (30× smaller than pretraining, to avoid catastrophic forgetting), weight decay 0, 3 epochs (~9,700 steps), data reshuffled each epoch. Total: ~36 minutes on the same GPU.</li><li>Loss descended smoothly from 2.9 → 1.8 across three epochs.</li></ul>
+<p>After SFT, the same model given an instruction produces a direct answer and stops itself by emitting <code>&lt;|endoftext|&gt;</code> — a behavioral transformation, not a knowledge gain. The 124M model still hallucinates; SFT changed how it responds, not whether it's intelligent.</p>
+<h2>What actually ate the time</h2>
+<p>I've learned it's really hard to train a model with finite resources. Some of the most instructive moments came from the failures along the way:</p>
+<ul><li>Diagnosing which of several look-alike processes was actually running, by reverse-engineering the LR schedule from the logs</li><li>Tracing a failed 3.07 GiB allocation to the FP32 logits tensor (<code>B × T × vocab × 4 bytes</code>), because the logits were upcast to FP32 during the loss computation under autocast</li><li>Debugging PyTorch 2.6's new <code>weights_only=True</code> default, which rejected checkpoints containing a pickled config dataclass</li></ul>
+<h2>Takeaway</h2>
+<p>These were small problems individually, but they reinforced a bigger lesson: with finite compute, training an LLM is as much about understanding the systems around the model as it is about the model itself.</p>
+<p><img src="../../assets/pretraining_and_fine-tuning_nanoGPT-124M.png" alt="Pretraining and fine-tuning nanoGPT-124M: loss curves and architecture" loading="lazy"></p>
+      </div>
+      <p class="backlink"><a href="/">&larr; Home</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>Subscribe via <a href="/feed.xml">RSS</a>, or find me on <a href="https://github.com/vito-lin-dev" rel="me">GitHub</a> and <a href="https://www.linkedin.com/in/vitothedev" rel="me">LinkedIn</a>.</p>
+    <p>&copy; 2026 Vito Lin &middot; colors by <a href="https://stephango.com/flexoki" rel="noopener">Flexoki</a></p>
+  </footer>
+</div>
+</body>
+</html>

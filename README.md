@@ -1,4 +1,4 @@
-# 9-8-7-6.github.io
+# vito-lin-dev.github.io
 
 Personal site for Vito Lin. Hand-written HTML and CSS, one typeface, no JavaScript
 on the page and no npm packages anywhere. Posts are Markdown; a build script that
@@ -20,18 +20,18 @@ index.html writing/ about/ 404.html feed.xml sitemap.xml   ← generated, do not
 
 ```bash
 cd ~/Desktop
-mv 9-8-7-6.github.io 9-8-7-6.github.io.old
-# unzip the new archive here, so that ~/Desktop/9-8-7-6.github.io/index.html exists
+mv vito-lin-dev.github.io vito-lin-dev.github.io.old
+# unzip the new archive here, so that ~/Desktop/vito-lin-dev.github.io/index.html exists
 ```
 
 If you already pushed the old version, keep the same repo and force the new tree in:
 
 ```bash
-cd ~/Desktop/9-8-7-6.github.io
+cd ~/Desktop/vito-lin-dev.github.io
 git init -b main
 git add .
 git commit -m "feat: rebuild site, refined minimal"
-git remote add origin https://github.com/9-8-7-6/9-8-7-6.github.io.git
+git remote add origin https://github.com/vito-lin-dev/vito-lin-dev.github.io.git
 git push -u origin main --force
 ```
 
